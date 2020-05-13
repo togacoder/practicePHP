@@ -6,5 +6,5 @@ services:
     image: dev
     container_name: dev
     volumes:
-      - ./src:/src
+      - ./src:/home/user/src
     tty: true
