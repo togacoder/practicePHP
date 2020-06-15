@@ -1,18 +1,37 @@
 <?php
 require_once("./phpQuery-onefile.php");
-$html = file_get_contents("https://hatenablog.com/");
-$phpQueryObj = phpQuery::newDocument($html);
+require_once("./stringFormat.php");
 
-$titleObj = $phpQueryObj[".serviceTop-entry-title"];
+const HATENA_URL = "https://hatenablog.com/";
+const HATENA_TITLE_CLASS_NAME = ".serviceTop-entry-title";
+const QIITA_URL = "https://qiita.com/";
 
-$titleAry = [];
-foreach ($titleObj as $title) {
-    $name = pq($title)->find('a')->text();
-    $url = pq($title)->find('a')->attr('href');
-    $name = preg_replace("/\r\n|\n|\r/", "", $name);
-    $name = preg_replace("/^\s+|\s+$/", "", $name);
-    $url = str_replace("\n", "", $url);
-    $titleAry[] = [$name, $url];
+// main
+function main() {
+    $phpQueryObj = getPhpQueryObj(HATENA_URL);
+    $titleArray = getTitleAndURL($phpQueryObj, HATENA_TITLE_CLASS_NAME);
+    var_dump($titleArray);
 }
 
-var_dump($titleAry);
+// phpQueryオブジェクトを取得
+function getPhpQueryObj($url) {
+    $html = file_get_contents($url);
+    return phpQuery::newDocument($html);
+}
+
+// タイトルとURLを取得
+function getTitleAndURL($phpQueryObj, $className) {
+    $titleObj = $phpQueryObj[$className];
+    $titleArray = [];
+    foreach($titleObj as $title) {
+        $name = pq($title)->find('a')->text();
+        $url = pq($title)->find('a')->attr('href');
+        $name = StringFormat::trimNewLine($name);
+        $name = StringFormat::trimHeadOrTailSpace($name);
+        $url = StringFormat::trimNewLine($url);
+        $titleArray[] = [$name, $url];
+    }
+    return $titleArray;
+}
+
+main();
