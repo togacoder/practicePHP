@@ -9,7 +9,31 @@ const HATENA_TITLE_CLASS_NAME = ".serviceTop-entry-title";
 function main() {
     $phpQueryObj = getPhpQueryObj(HATENA_URL);
     $titleArray = getTitleAndURL($phpQueryObj, HATENA_TITLE_CLASS_NAME);
-    var_dump($titleArray);
+    $opts = getopt("a");
+    $opt_flags["a"] = $opts["a"] === false ? true : false;
+    if ($opt_flags["a"]) {
+        viewTitleAndURL($titleArray);
+    } else {
+        viewOneTitleAndURL($titleArray);
+    }
+}
+
+// タイトルとURLを全て表示する
+function viewTitleAndURL($titleArray) {
+    foreach ($titleArray as $value => $key) {
+        echo $value . "\n";
+        echo $key[0] . "\n";
+        echo $key[1] . "\n";
+        echo "----------------------------\n\n";
+    }
+}
+
+// タイトルとURLを１件表示する。
+function viewOneTitleAndURL($titleArray) {
+    $max_size = count($titleArray);
+    $index = rand(0, $max_size);
+    echo $titleArray[$index][0] . "\n";
+    echo $titleArray[$index][1] . "\n";
 }
 
 // phpQueryオブジェクトを取得
@@ -22,7 +46,7 @@ function getPhpQueryObj($url) {
 function getTitleAndURL($phpQueryObj, $className) {
     $titleObj = $phpQueryObj[$className];
     $titleArray = [];
-    foreach($titleObj as $title) {
+    foreach ($titleObj as $title) {
         $name = pq($title)->find('a')->text();
         $url = pq($title)->find('a')->attr('href');
         $name = StringFormat::trimNewLine($name);
