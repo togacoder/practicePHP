@@ -4,7 +4,6 @@ require_once("./stringFormat.php");
 
 const HATENA_URL = "https://hatenablog.com/";
 const HATENA_TITLE_CLASS_NAME = ".serviceTop-entry-title";
-const QIITA_URL = "https://qiita.com/";
 
 // main
 function main() {
