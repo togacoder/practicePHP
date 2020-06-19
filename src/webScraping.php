@@ -1,6 +1,7 @@
 <?php
 require_once("./phpQuery-onefile.php");
 require_once("./stringFormat.php");
+require_once("./viewClass.php");
 
 const HATENA_URL = "https://hatenablog.com/";
 const HATENA_TITLE_CLASS_NAME = ".serviceTop-entry-title";
@@ -9,35 +10,12 @@ const GIGAZIN_TITLE_CLASS_NAME = "h2";
 
 // main
 function main() {
-    //$phpQueryObj = getPhpQueryObj(HATENA_URL);
-    //$titleArray = getTitleAndURL($phpQueryObj, HATENA_TITLE_CLASS_NAME);
-    $phpQueryObj = getPhpQueryObj(GIGAZIN_URL);
-    $titleArray = getTitleAndURL($phpQueryObj, GIGAZIN_TITLE_CLASS_NAME);
+    //$titleArray = getTitleAndURL(HATENA_URL, HATENA_TITLE_CLASS_NAME);
+    $titleArray = getTitleAndURL(GIGAZIN_URL, GIGAZIN_TITLE_CLASS_NAME);
     $opts = getopt("a");
     $opt_flags["a"] = $opts["a"] === false ? true : false;
-    if ($opt_flags["a"]) {
-        viewTitleAndURL($titleArray);
-    } else {
-        viewOneTitleAndURL($titleArray);
-    }
-}
 
-// タイトルとURLを全て表示する
-function viewTitleAndURL($titleArray) {
-    foreach ($titleArray as $value => $key) {
-        echo $value . "\n";
-        echo $key[0] . "\n";
-        echo $key[1] . "\n";
-        echo "----------------------------\n\n";
-    }
-}
-
-// タイトルとURLを１件表示する。
-function viewOneTitleAndURL($titleArray) {
-    $max_size = count($titleArray);
-    $index = rand(0, $max_size);
-    echo $titleArray[$index][0] . "\n";
-    echo $titleArray[$index][1] . "\n";
+    viewClass::viewManager($titleArray, $opt_flags);
 }
 
 // phpQueryオブジェクトを取得
@@ -47,7 +25,8 @@ function getPhpQueryObj($url) {
 }
 
 // タイトルとURLを取得
-function getTitleAndURL($phpQueryObj, $className) {
+function getTitleAndURL($URL, $className) {
+    $phpQueryObj = getPhpQueryObj($URL);
     $titleObj = $phpQueryObj[$className];
     $titleArray = [];
     foreach ($titleObj as $title) {
