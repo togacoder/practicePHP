@@ -4,11 +4,15 @@ require_once("./stringFormat.php");
 
 const HATENA_URL = "https://hatenablog.com/";
 const HATENA_TITLE_CLASS_NAME = ".serviceTop-entry-title";
+const GIGAZIN_URL = "https://gigazine.net/";
+const GIGAZIN_TITLE_CLASS_NAME = "h2";
 
 // main
 function main() {
-    $phpQueryObj = getPhpQueryObj(HATENA_URL);
-    $titleArray = getTitleAndURL($phpQueryObj, HATENA_TITLE_CLASS_NAME);
+    //$phpQueryObj = getPhpQueryObj(HATENA_URL);
+    //$titleArray = getTitleAndURL($phpQueryObj, HATENA_TITLE_CLASS_NAME);
+    $phpQueryObj = getPhpQueryObj(GIGAZIN_URL);
+    $titleArray = getTitleAndURL($phpQueryObj, GIGAZIN_TITLE_CLASS_NAME);
     $opts = getopt("a");
     $opt_flags["a"] = $opts["a"] === false ? true : false;
     if ($opt_flags["a"]) {
