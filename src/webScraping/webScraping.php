@@ -10,12 +10,15 @@ const GIGAZIN_TITLE_CLASS_NAME = "h2";
 
 // main
 function main() {
-    //$titleArray = getTitleAndURL(HATENA_URL, HATENA_TITLE_CLASS_NAME);
-    $titleArray = getTitleAndURL(GIGAZIN_URL, GIGAZIN_TITLE_CLASS_NAME);
+    $allTitleArray = array();
+    $hatenaTitleArray = getTitleAndURL(HATENA_URL, HATENA_TITLE_CLASS_NAME);
+    $gigazinTitleArray = getTitleAndURL(GIGAZIN_URL, GIGAZIN_TITLE_CLASS_NAME);
     $opts = getopt("a");
     $opt_flags["a"] = $opts["a"] === false ? true : false;
 
-    viewClass::viewManager($titleArray, $opt_flags);
+    $allTitleArray = array_merge($allTitleArray, $hatenaTitleArray, $gigazinTitleArray);
+
+    viewClass::viewManager($allTitleArray, $opt_flags);
 }
 
 // phpQueryオブジェクトを取得
